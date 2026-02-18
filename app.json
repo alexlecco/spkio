@@ -1,45 +1,39 @@
 {
   "expo": {
-    "name": "Semana de la Ing 2021",
-    "description": "Aplicación de la semana de la ingeniería 2021",
-    "slug": "semanautn3",
-    "facebookScheme": "fb599546973887572",
-    "facebookAppId": "599546973887572",
-    "facebookDisplayName": "Semana de la ingeniería 2021",
+    "name": "spkio",
+    "description": "spkio app",
+    "slug": "spkio",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
-    "scheme": "myapp",
+    "scheme": "spkio",
     "userInterfaceStyle": "automatic",
+    "newArchEnabled": true,
     "splash": {
       "image": "./assets/images/splash.png",
       "resizeMode": "cover",
       "backgroundColor": "#b0b1b3"
     },
-    "updates": {
-      "fallbackToCacheTimeout": 0
-    },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.alexlecco.spkio"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.alexlecco.semanautn3",
-      "versionCode": 1,
-      "permissions": []
+      "package": "com.alexlecco.spkio"
     },
     "web": {
+      "bundler": "metro",
       "favicon": "./assets/images/favicon.png"
     },
-    "androidStatusBar": {
-      "backgroundColor": "##b0b1b3",
-      "translucent": true
+    "plugins": [
+      "expo-router"
+    ],
+    "experiments": {
+      "typedRoutes": true
     }
   }
 }

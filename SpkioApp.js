@@ -22,7 +22,7 @@ import firebaseApp from './firebase/firebase';
 import texts from './constants/texts';
 import { loginImageURL } from './firebase/storage-urls';
 
-const SemanaApp = _ => {
+const SpkioApp = _ => {
   const [state, setState] = useContext(AppContext);
   const [needToLogIn, setNeedToLogIn] = useState(false);
   const { talkInfoVisible, logged, talks } = state;
@@ -245,7 +245,7 @@ const SemanaApp = _ => {
         const response = await fetch(`https://graph.facebook.com/me?access_token=${token}`);
         Alert.alert(
           '¡Ingresaste correctamente!',
-          `Bienvenido/a ${(await response.json()).name}!, gracias por participar de la semana de la ingeniería 2021`
+          `Bienvenido/a ${(await response.json()).name}!`
         );
       } else {
         // type === 'cancel'
@@ -311,4 +311,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default SemanaApp;
+export default SpkioApp;

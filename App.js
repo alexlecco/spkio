@@ -1,4 +1,3 @@
-import React from 'react';
 import { LogBox } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
@@ -11,7 +10,7 @@ import {
 import useCachedResources from './hooks/useCachedResources';
 
 // components
-import SemanaApp from './SemanaApp';
+import SpkioApp from './SpkioApp';
 
 // helpers
 import ContextProvider from './context/provider';
@@ -35,7 +34,7 @@ const App = _ => {
       :
         <SafeAreaProvider>
           <ContextProvider>
-            <SemanaApp />
+            <SpkioApp />
           </ContextProvider>
           <StatusBar backgroundColor={Colors[colorScheme].tint} />
         </SafeAreaProvider>
