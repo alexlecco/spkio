@@ -1,5 +1,7 @@
 import React, { useContext, useState } from 'react';
 import { FlatList, StyleSheet, View, Text, TouchableOpacity, useColorScheme } from 'react-native';
+import { router } from 'expo-router';
+import { Ionicons } from '@expo/vector-icons';
 import { AppContext } from '../../context/provider';
 import Colors from '../../constants/Colors';
 
@@ -21,21 +23,34 @@ export default function CalendarScreen() {
     return [];
   }
 
+  const navigateToTalk = (talkId: string) => {
+    router.push(`/talk/${talkId}`);
+  };
+
   const renderTalkCard = ({ item }: { item: any }) => (
-    <View style={[styles.card, { backgroundColor: colorScheme === 'dark' ? '#333' : '#fff' }]}>
-      <Text style={[styles.time, { color: Colors[colorScheme].tint }]}>{item.time}</Text>
-      <Text style={[styles.title, { color: Colors[colorScheme].talkCardText }]}>{item.title}</Text>
-      {item.speaker && (
-        <Text style={[styles.speaker, { color: Colors[colorScheme].talkCardText }]}>
-          {item.speaker.name || item.speaker}
-        </Text>
-      )}
-      {item.description && (
-        <Text style={[styles.description, { color: Colors[colorScheme].talkCardText }]} numberOfLines={2}>
-          {item.description}
-        </Text>
-      )}
-    </View>
+    <TouchableOpacity 
+      style={[styles.card, { backgroundColor: colorScheme === 'dark' ? '#333' : '#fff' }]}
+      onPress={() => navigateToTalk(item.id || item._key)}
+      activeOpacity={0.7}
+    >
+      <View style={styles.cardContent}>
+        <View style={styles.cardInfo}>
+          <Text style={[styles.time, { color: Colors[colorScheme].tint }]}>{item.time}</Text>
+          <Text style={[styles.title, { color: Colors[colorScheme].talkCardText }]}>{item.title}</Text>
+          {item.speaker && (
+            <Text style={[styles.speaker, { color: Colors[colorScheme].talkCardText }]}>
+              {item.speaker.name || item.speaker}
+            </Text>
+          )}
+          {item.description && (
+            <Text style={[styles.description, { color: Colors[colorScheme].talkCardText }]} numberOfLines={2}>
+              {item.description}
+            </Text>
+          )}
+        </View>
+        <Ionicons name="chevron-forward" size={20} color={Colors[colorScheme].tint} />
+      </View>
+    </TouchableOpacity>
   );
 
   return (
@@ -111,6 +126,13 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.1,
     shadowRadius: 4,
     elevation: 3,
+  },
+  cardContent: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  cardInfo: {
+    flex: 1,
   },
   time: {
     fontSize: 14,

@@ -175,6 +175,7 @@ function RootLayoutContent() {
     <>
       <Stack>
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+        <Stack.Screen name="talk/[id]" options={{ headerShown: false }} />
       </Stack>
       <StatusBar style="auto" />
     </>

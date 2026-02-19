@@ -1,5 +1,7 @@
 import React, { useContext, useState, useEffect } from 'react';
 import { FlatList, StyleSheet, View, Text, TouchableOpacity, useColorScheme } from 'react-native';
+import { router } from 'expo-router';
+import { Ionicons } from '@expo/vector-icons';
 import { AppContext } from '../../context/provider';
 import { supabase } from '../../lib/supabase';
 import Colors from '../../constants/Colors';
@@ -105,32 +107,29 @@ export default function MyTalksScreen() {
     setUserTalksByDay(byDay);
   }, [userTalks]);
 
-  const removeTalk = async (userTalkId: string) => {
-    const { error } = await supabase
-      .from('user_talks')
-      .delete()
-      .eq('id', userTalkId);
-
-    if (error) {
-      console.error('Error removing talk:', error);
-    }
+  const navigateToTalk = (talkId: string) => {
+    router.push(`/talk/${talkId}`);
   };
 
   const renderTalkCard = ({ item }: { item: any }) => (
-    <View style={[styles.card, { backgroundColor: colorScheme === 'dark' ? '#333' : '#fff' }]}>
-      <View style={styles.cardHeader}>
-        <Text style={[styles.time, { color: Colors[colorScheme].tint }]}>{item.time}</Text>
-        <TouchableOpacity onPress={() => removeTalk(item.userTalkId)}>
-          <Text style={styles.removeButton}>Quitar</Text>
-        </TouchableOpacity>
+    <TouchableOpacity 
+      style={[styles.card, { backgroundColor: colorScheme === 'dark' ? '#333' : '#fff' }]}
+      onPress={() => navigateToTalk(item.id || item._key)}
+      activeOpacity={0.7}
+    >
+      <View style={styles.cardContent}>
+        <View style={styles.cardInfo}>
+          <Text style={[styles.time, { color: Colors[colorScheme].tint }]}>{item.time}</Text>
+          <Text style={[styles.title, { color: Colors[colorScheme].talkCardText }]}>{item.title}</Text>
+          {item.speaker && (
+            <Text style={[styles.speaker, { color: Colors[colorScheme].talkCardText }]}>
+              {item.speaker.name || item.speaker}
+            </Text>
+          )}
+        </View>
+        <Ionicons name="chevron-forward" size={20} color={Colors[colorScheme].tint} />
       </View>
-      <Text style={[styles.title, { color: Colors[colorScheme].talkCardText }]}>{item.title}</Text>
-      {item.speaker && (
-        <Text style={[styles.speaker, { color: Colors[colorScheme].talkCardText }]}>
-          {item.speaker.name || item.speaker}
-        </Text>
-      )}
-    </View>
+    </TouchableOpacity>
   );
 
   return (
@@ -207,20 +206,17 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     elevation: 3,
   },
-  cardHeader: {
+  cardContent: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: 4,
+  },
+  cardInfo: {
+    flex: 1,
   },
   time: {
     fontSize: 14,
     fontWeight: 'bold',
-  },
-  removeButton: {
-    color: '#e74c3c',
-    fontSize: 12,
-    fontWeight: '600',
+    marginBottom: 4,
   },
   title: {
     fontSize: 16,
