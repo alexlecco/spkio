@@ -28,7 +28,7 @@ function RootLayoutContent() {
   }, [fontsLoaded]);
 
   // Create or get anonymous user
-  const createAnonymousUser = async () => {
+  const createAnonymousUser = async (retries = 3): Promise<string | null> => {
     try {
       // Check if we have a stored user ID in state
       if (state.loggedUser?.uid) {
@@ -43,7 +43,10 @@ function RootLayoutContent() {
         .select()
         .single();
 
-      if (error) throw error;
+      if (error) {
+        console.error('Supabase error:', JSON.stringify(error, null, 2));
+        throw error;
+      }
 
       const newUserId = data.id;
       setUserId(newUserId);
@@ -58,8 +61,18 @@ function RootLayoutContent() {
       }));
 
       return newUserId;
-    } catch (error) {
-      console.error('Error creating user:', error);
+    } catch (error: any) {
+      console.error('Error creating user:', JSON.stringify(error, null, 2));
+      console.error('Error message:', error?.message);
+      console.error('Error code:', error?.code);
+      
+      // Retry on network errors
+      if (error?.message?.includes('Network request failed') && retries > 0) {
+        console.log(`Retrying... (${retries} attempts left)`);
+        await new Promise(resolve => setTimeout(resolve, 1000));
+        return createAnonymousUser(retries - 1);
+      }
+      
       return null;
     }
   };
